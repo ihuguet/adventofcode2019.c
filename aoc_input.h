@@ -27,6 +27,13 @@ GString *
 aoc_input_reader_getline(AocInputReader *reader);
 
 /**
+ * Like aoc_input_reader_getline, but selecting other delimiter other than '\n'.
+ * The same limitations and ownership considerations apply.
+ */
+GString *
+aoc_input_reader_getdelim(AocInputReader *reader, char delim);
+
+/**
  * Return the number parsed from the string, or PARSE_NUM_ERR
  */
 long

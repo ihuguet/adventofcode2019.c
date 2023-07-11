@@ -33,12 +33,17 @@ aoc_input_reader_new(const char *dayXX) {
 
 GString *
 aoc_input_reader_getline(AocInputReader *self) {
-    ssize_t rc = getline(&self->buffer->str, &self->buffer->allocated_len, self->file);
+    return aoc_input_reader_getdelim(self, '\n');
+}
+
+GString *
+aoc_input_reader_getdelim(AocInputReader *self, char delim) {
+    ssize_t rc = getdelim(&self->buffer->str, &self->buffer->allocated_len, delim, self->file);
     if (rc == -1)
         return NULL;
 
-    if (self->buffer->str[rc - 1] == '\n') {
-        self->buffer->str[rc - 1] = '\0'; // remove EOL
+    if (self->buffer->str[rc - 1] == delim) {
+        self->buffer->str[rc - 1] = '\0'; // remove delimiter character
         self->buffer->len = rc - 1;
     } else {
         self->buffer->len = rc;
@@ -53,8 +58,8 @@ aoc_input_reader_finalize(GObject *gobj) {
 
     AocInputReader *self = AOC_INPUT_READER(gobj);
     fclose(self->file);
-    g_object_unref(self->buffer);
-    G_OBJECT_CLASS(aoc_input_reader_parent_class)->finalize(gobj);
+    g_string_free(self->buffer, TRUE);
+    G_OBJECT_CLASS(aoc_input_reader_parent_class)->finalize(&self->parent);
 }
 
 static void
