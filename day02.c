@@ -84,9 +84,9 @@ parse_input() {
     if (values == NULL)
         goto out;
 
-    GString *token;
+    char *token;
     while ((token = aoc_input_reader_getdelim(reader, ',')) != NULL) {
-        long val = aoc_input_parse_num(token->str);
+        long val = aoc_input_parse_num(token);
         g_array_append_val(values, val);
     }
 

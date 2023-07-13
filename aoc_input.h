@@ -23,20 +23,30 @@ aoc_input_reader_new(const char *dayXX);
  * call to getline, when the storage of the string is reused and the data
  * overwritten.
  */
-GString *
+char *
 aoc_input_reader_getline(AocInputReader *reader);
 
 /**
  * Like aoc_input_reader_getline, but selecting other delimiter other than '\n'.
  * The same limitations and ownership considerations apply.
  */
-GString *
+char *
 aoc_input_reader_getdelim(AocInputReader *reader, char delim);
+
+/**
+ * Take ownership of the string buffer
+ * Later, when calling getline/getdelim a new buffer will be created
+ */
+char *
+aoc_input_reader_steal_buffer(AocInputReader *reader);
 
 /**
  * Return the number parsed from the string, or PARSE_NUM_ERR
  */
 long
 aoc_input_parse_num(const char *str);
+
+GArray *
+aoc_input_split_char(char *str, const char *delim);
 
 #endif

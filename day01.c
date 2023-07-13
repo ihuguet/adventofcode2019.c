@@ -22,9 +22,9 @@ main(int argc, char **argv) {
     if (reader == NULL)
         return EXIT_FAILURE;
 
-    GString *line;
+    char *line;
     while ((line = aoc_input_reader_getline(reader)) != NULL) {
-        long val = aoc_input_parse_num(line->str);
+        long val = aoc_input_parse_num(line);
         if (val == PARSE_NUM_ERR)
             return EXIT_FAILURE;
 
@@ -34,6 +34,8 @@ main(int argc, char **argv) {
 
     printf("Part 1: total fuel = %ld\n", total_part1);
     printf("Part 2: total fuel = %ld\n", total_part2);
+
+    g_object_unref(reader);
     return EXIT_SUCCESS;
 }
 

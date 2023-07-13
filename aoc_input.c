@@ -6,7 +6,9 @@
 struct _AocInputReader {
     GObject parent;
     FILE *file;
-    GString *buffer;
+    char *buffer;
+    size_t buff_used;
+    size_t buff_capacity;
 };
 
 G_DEFINE_TYPE(AocInputReader, aoc_input_reader, G_TYPE_OBJECT)
@@ -31,25 +33,34 @@ aoc_input_reader_new(const char *dayXX) {
     return self;
 }
 
-GString *
+char *
 aoc_input_reader_getline(AocInputReader *self) {
     return aoc_input_reader_getdelim(self, '\n');
 }
 
-GString *
+char *
 aoc_input_reader_getdelim(AocInputReader *self, char delim) {
-    ssize_t rc = getdelim(&self->buffer->str, &self->buffer->allocated_len, delim, self->file);
+    ssize_t rc = getdelim(&self->buffer, &self->buff_capacity, delim, self->file);
     if (rc == -1)
         return NULL;
 
-    if (self->buffer->str[rc - 1] == delim) {
-        self->buffer->str[rc - 1] = '\0'; // remove delimiter character
-        self->buffer->len = rc - 1;
+    if (self->buffer[rc - 1] == delim) {
+        self->buffer[rc - 1] = '\0'; // remove delimiter character
+        self->buff_used = rc - 1;
     } else {
-        self->buffer->len = rc;
+        self->buff_used = rc;
     }
 
     return self->buffer;
+}
+
+char *
+aoc_input_reader_steal_buffer(AocInputReader *self) {
+    char *buff = self->buffer;
+    self->buffer = NULL;
+    self->buff_used = 0;
+    self->buff_capacity = 0;
+    return buff;
 }
 
 static void
@@ -58,7 +69,7 @@ aoc_input_reader_finalize(GObject *gobj) {
 
     AocInputReader *self = AOC_INPUT_READER(gobj);
     fclose(self->file);
-    g_string_free(self->buffer, TRUE);
+    free(self->buffer);
     G_OBJECT_CLASS(aoc_input_reader_parent_class)->finalize(&self->parent);
 }
 
@@ -70,7 +81,7 @@ aoc_input_reader_class_init(AocInputReaderClass *class) {
 
 static void
 aoc_input_reader_init(AocInputReader *self) {
-    self->buffer = g_string_new("");
+    self->buffer = NULL;
 }
 
 long
@@ -81,4 +92,17 @@ aoc_input_parse_num(const char *str) {
         return PARSE_NUM_ERR;
 
     return val;
+}
+
+GArray *
+aoc_input_split_char(char *str, const char *delim) {
+    GArray *tokens = g_array_new(FALSE, FALSE, sizeof(char *));
+    if (tokens == NULL)
+        return NULL;
+
+    while ((str = strsep(&str, delim)) != NULL) {
+        g_array_append_val(tokens, str);
+    }
+
+    return tokens;
 }
