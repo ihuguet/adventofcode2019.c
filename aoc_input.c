@@ -100,8 +100,10 @@ aoc_input_split_char(char *str, const char *delim) {
     if (tokens == NULL)
         return NULL;
 
-    while ((str = strsep(&str, delim)) != NULL) {
-        g_array_append_val(tokens, str);
+    char *token = str;
+    while (str != NULL) {
+        token = strsep(&str, delim);
+        g_array_append_val(tokens, token);
     }
 
     return tokens;

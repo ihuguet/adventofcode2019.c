@@ -18,3 +18,5 @@ test('day01', test01, env: test_env, protocol: 'tap')
 day02 = executable('day02', sources: 'day02.c', link_with: aoc, dependencies: deps)
 test02 = executable('test02', sources: 'day02.c', link_with: aoc, dependencies: deps, c_args: test_c_args)
 test('day02', test02, env: test_env, protocol: 'tap')
+
+day03 = executable('day03', sources: 'day03.c', link_with: aoc, dependencies: deps)
