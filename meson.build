@@ -20,3 +20,5 @@ test02 = executable('test02', sources: 'day02.c', link_with: aoc, dependencies: 
 test('day02', test02, env: test_env, protocol: 'tap')
 
 day03 = executable('day03', sources: 'day03.c', link_with: aoc, dependencies: deps)
+
+day04 = executable('day04', sources: 'day04.c')
