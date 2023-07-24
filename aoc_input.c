@@ -95,16 +95,18 @@ aoc_input_parse_num(const char *str) {
 }
 
 GArray *
-aoc_input_split_char(char *str, const char *delim) {
-    GArray *tokens = g_array_new(FALSE, FALSE, sizeof(char *));
-    if (tokens == NULL)
+aoc_input_split_char(char *str, const char *delim, GArray *out_arr) {
+    if (out_arr == NULL)
+        out_arr = g_array_new(FALSE, FALSE, sizeof(char *));
+
+    if (out_arr == NULL)
         return NULL;
 
     char *token = str;
     while (str != NULL) {
         token = strsep(&str, delim);
-        g_array_append_val(tokens, token);
+        g_array_append_val(out_arr, token);
     }
 
-    return tokens;
+    return out_arr;
 }

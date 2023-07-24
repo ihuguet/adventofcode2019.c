@@ -46,7 +46,13 @@ aoc_input_reader_steal_buffer(AocInputReader *reader);
 long
 aoc_input_parse_num(const char *str);
 
+/**
+ * Split the string str at any of the chars contained by the string delim.
+ * Append the tokens to the out_arr array. If out_arr is NULL, it is created.
+ * The same array is returned. It only contains pointers to the original string,
+ * so it doesn't own the data.
+ */
 GArray *
-aoc_input_split_char(char *str, const char *delim);
+aoc_input_split_char(char *str, const char *delim, GArray *out_arr);
 
 #endif

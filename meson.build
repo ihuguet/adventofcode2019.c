@@ -24,3 +24,5 @@ day03 = executable('day03', sources: 'day03.c', link_with: aoc, dependencies: de
 day04 = executable('day04', sources: 'day04.c')
 
 day05 = executable('day05', sources: 'day05.c', link_with: aoc, dependencies: deps)
+
+day06 = executable('day06', sources: 'day06.c', link_with: aoc, dependencies: deps)

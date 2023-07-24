@@ -101,7 +101,7 @@ get_visited_points(GArray *moves) {
 
 static GArray *
 parse_moves(char *line) {
-    GArray *tokens = aoc_input_split_char(line, ",");
+    GArray *tokens = aoc_input_split_char(line, ",", NULL);
     if (tokens == NULL)
         return NULL;
 
