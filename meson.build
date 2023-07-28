@@ -28,3 +28,5 @@ day05 = executable('day05', sources: 'day05.c', link_with: aoc, dependencies: de
 day06 = executable('day06', sources: 'day06.c', link_with: aoc, dependencies: deps)
 
 day07 = executable('day07', sources: 'day07.c', link_with: aoc, dependencies: deps)
+
+day08 = executable('day08', sources: 'day08.c', link_with: aoc, dependencies: deps)
